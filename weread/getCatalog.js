@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Weread full-screen catalog-count
+// @name         Weread Get Catalog
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @description  try to take over the world!
-// @author       JorisCai
+// @author       Joris Cai
 // @match        https://weread.qq.com/web/reader/*
 // @require      http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js
 // @grant        none
