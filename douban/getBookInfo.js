@@ -73,9 +73,11 @@
         }
         // url
         data.url = location.href;
+        // pic
+        data.pic = $('#mainpic img').attr('src');
         // intro
         data.intro = $('#link-report .intro').children();
-        data.intro = Array.from(data.intro).map(ele => $(ele).text()).join('\n');
+        data.intro = Array.from(data.intro).map(ele => $(ele).text().trim()).join('\n');
 
         console.log('data', data);
         return data;
@@ -96,14 +98,17 @@
         const date = new Date();
         const readDate = `${date.getFullYear()}年${date.getMonth() + 1}月`;
 
-        const template = `## 关于本书\n`
-        + `| **书名** | [《${data.name}》](${data.url}) | **作者** | ${authorTxt} |`
-        + `| --- | --- | --- | --- |`
-        + `| **出版社** | ${data.publisher} | **阅读日期** | ${readDate} |`
-        + `| **豆瓣评分** | **${data.score}** | **我的评分** | **0.0** |\n`
-        + `## 内容简介\n`
-        + `${data.intro}`;
+        const template = [
+            `![${data.name}](${data.pic}#align=left&display=inline&width=196)`,
+            `## 关于本书`,
+            `| **书名** | [《${data.name}》](${data.url}) | **作者** | ${authorTxt} |`,
+            `| --- | --- | --- | --- |`,
+            `| **出版社** | ${data.publisher} | **阅读日期** | ${readDate} |`,
+            `| **豆瓣评分** | **${data.score}** | **我的评分** | **0.0** |`,
+            `## 内容简介`,
+            `${data.intro}`,
+        ];
 
-        return template;
+        return template.join('\n');
     }
 })();
