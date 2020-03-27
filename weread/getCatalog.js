@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weread Get Catalog
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Get Catalog
 // @author       Joris Cai
 // @match        https://weread.qq.com/web/reader/*
@@ -59,14 +59,18 @@
             const a = ele.querySelector('a');
             const text = a.innerText;
             const classList = Array.from(a.classList);
+            const isLevel1 = classList.includes('chapterItem_level1');
             let prefix = pre;
-            const isLevel2 = classList.includes('chapterItem_level2');
-            if (isLevel2) {
-                prefix += '#';
-            }
+            const { className } = a;
+            let [, num] = className.match(/level(\d+)/);
+            num = Number(num) - 1 || 0;
+            prefix = prefix.padEnd(pre.length + num, '#');
             arr.push(`${prefix} ${text}`);
-            isLevel2 && arr.push(`- 写下重点吧`);
-            isLevel2 && arr.push(`${prefix + '#'} 总结`);
+
+            if (!isLevel1) {
+                arr.push(`- 写下重点吧`);
+                arr.push(`**总结**`);
+            }
         });
         return arr.join('\n');
     }
