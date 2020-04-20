@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weread Get Catalog
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.2
 // @description  Get Catalog
 // @author       Joris Cai
 // @match        https://weread.qq.com/web/reader/*
@@ -20,7 +20,7 @@
     })
     body.prepend(btn);
     body.on('click', '#get-catalog', (e) => {
-        const pre = prompt('MarkDown首级标题', '##');
+        const pre = prompt('MarkDown首级标题', '###');
         start(pre, e);
     });
 
@@ -59,11 +59,18 @@
             const a = ele.querySelector('a');
             const text = a.innerText;
             const classList = Array.from(a.classList);
+            const isLevel1 = classList.includes('chapterItem_level1');
             let prefix = pre;
-            if (classList.includes('chapterItem_level2')) {
-                prefix += '#';
-            }
+            const { className } = a;
+            let [, num] = className.match(/level(\d+)/);
+            num = Number(num) - 1 || 0;
+            prefix = prefix.padEnd(pre.length + num, '#');
             arr.push(`${prefix} ${text}`);
+
+            if (!isLevel1) {
+                arr.push(`- 写下重点吧`);
+                arr.push(`**总结**`);
+            }
         });
         return arr.join('\n');
     }

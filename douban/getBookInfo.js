@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Douban Get Book Info
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Get Book Info
 // @author       Joris Cai
 // @match        https://book.douban.com/subject/*
@@ -94,14 +94,14 @@
 
     function generateTable(data) {
         const { author = [] } = data;
-        const authorTxt = author.map(ele => `[${ele}](https://book.douban.com/search/${ele})`).join('/');
+        const authorTxt = author.map(ele => `[${ele}](https://book.douban.com/search/${encodeURIComponent(ele)})`).join('/');
         const date = new Date();
         const readDate = `${date.getFullYear()}年${date.getMonth() + 1}月`;
 
         const template = [
             `![${data.name}](${data.pic}#align=left&display=inline&width=196)`,
             `## 关于本书`,
-            `| **书名** | [《${data.name}》](${data.url}) | **作者** | ${authorTxt} |`,
+            `| **书名** |  [《${data.name}》 ](${data.url}) | **作者** |  ${authorTxt}  |`,
             `| --- | --- | --- | --- |`,
             `| **出版社** | ${data.publisher} | **阅读日期** | ${readDate} |`,
             `| **豆瓣评分** | **${data.score}** | **我的评分** | **0.0** |`,

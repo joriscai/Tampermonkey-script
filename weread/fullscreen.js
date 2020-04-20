@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weread Full Screen
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  try to take over the world!
 // @author       Joris Cai
 // @match        https://weread.qq.com/web/reader/*
@@ -32,8 +32,10 @@
                 readerCtrl.removeAttr('style');
                 btnTxt = '全屏';
             } else {
+                const height = readerCtrl.height()
                 content.css({
                     'max-width': 'unset',
+                    'padding-bottom': height + 'px',
                 });
 
                 topBar.css({
