@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weread Copy Code
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  Copy Code
 // @author       Joris Cai
 // @match        https://weread.qq.com/web/reader/*
@@ -18,7 +18,7 @@
         position: 'absolute',
         'z-index': 1000,
         background: 'black',
-        padding: '2px 4px',
+        padding: '4px 6px',
     })
     body.append(btn);
     body.on('click', '#copy-code', (event) => {
@@ -44,44 +44,32 @@
 
     body.on('hover', 'pre.ziti1',  (e) => {
         const type = e.type;
-
         const target = $(e.target);
-        console.log('target: ', target);
 
         const offset = target.offset();
-        const rect = target[0].getBoundingClientRect();
-        console.log('hover', type);
+        const btnRect = btn[0].getBoundingClientRect();
+        const targetRect = e.target.getBoundingClientRect();
+        const isInHor = (e.clientX >= btnRect.left) && (e.clientX < (btnRect.right))
+        const isInVer = (e.clientY >= btnRect.top) && (e.clientY < (btnRect.bottom))
 
-        const isInHor = (e.clientX >= rect.x) && (e.clientX < (rect.x + rect.width))
-        const isInVer = (e.clientY >= rect.y) && (e.clientY < (rect.y + rect.height))
+        if (type === 'mouseleave' && !(isInHor && isInVer)) {
+            btn.hide();
+        } else if (type === 'mouseenter') {
+            const winWidth = $(window).width();
+            let right = winWidth - targetRect.right;
+            right = right < 0 ? 0 : right;
 
-        if (isInHor && isInVer) {
-            let left = offset.left + target.width();
-            left = left > $(window).width() ? $(window).width() : left;
             btn.css({
                 top: offset.top,
-                left,
+                right,
             });
             btn.attr('data-clipboard-text', target.text());
             btn.show();
-        } else {
-            btn.hide();
         }
+    });
 
-        // if (type === 'mouseleave') {
-        //     btn.hide();
-        //     console.log('hide');
-        // } else if (type === 'mouseenter') {
-        //     console.log('show', offset);
-        //     let left = offset.left + target.width();
-        //     left = left > $(window).width() ? $(window).width() : left;
-        //     btn.css({
-        //         top: offset.top,
-        //         left,
-        //     });
-        //     btn.attr('data-clipboard-text', target.text());
-        //     btn.show();
-        // }
+    btn.on('mouseleave', () => {
+        btn.hide()
     });
 
 })();
