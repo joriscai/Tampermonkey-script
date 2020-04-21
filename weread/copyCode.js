@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weread Copy Code
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Copy Code
 // @author       Joris Cai
 // @match        https://weread.qq.com/web/reader/*
@@ -19,6 +19,7 @@
         'z-index': 1000,
         background: 'black',
         padding: '4px 6px',
+        cursor: 'pointer',
     })
     body.append(btn);
     body.on('click', '#copy-code', (event) => {
