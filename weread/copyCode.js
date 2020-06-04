@@ -43,7 +43,7 @@
     });
 
 
-    body.on('hover', 'pre.ziti1',  (e) => {
+    body.on('hover', 'pre.ziti1, pre.wr_absolute',  (e) => {
         const type = e.type;
         const target = $(e.target);
 
